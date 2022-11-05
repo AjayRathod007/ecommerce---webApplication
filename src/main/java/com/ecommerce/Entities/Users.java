@@ -28,7 +28,7 @@ public class Users {
 	private Date updatedAt;
 	public Users() {
 		super();
-		// TODO Auto-generated constructor stub
+		System.out.println("user module");
 	}
 	public Users(int userId, String userName, String password, String firstName, String lastName, String email,
 			String mobileNumber, String status, String city, String street, String pincode, Date createdAt,

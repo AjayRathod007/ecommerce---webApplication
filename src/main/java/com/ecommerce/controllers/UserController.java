@@ -2,6 +2,8 @@ package com.ecommerce.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.Entities.Users;
-import com.ecommerce.dto.UserGetRequestBody;
+
 import com.ecommerce.dto.UserRegisterRequestBody;
 import com.ecommerce.dto.UserUpdateRequestBody;
 import com.ecommerce.services.UsersService;
-import com.ecommerce.validation.UserRequestBodyValidation;
+
 
 @RestController
 public class UserController {
@@ -31,18 +33,21 @@ public class UserController {
 	private UsersService userService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> userRegister(@RequestBody UserRegisterRequestBody user) {
-
+	public ResponseEntity<?> userRegister(@Valid @RequestBody UserRegisterRequestBody user) {
+            
 		try {
-			logger.info("Received user {}", user);
-			UserRequestBodyValidation.validateUserName(user.getUserName());
-			UserRequestBodyValidation.validateUserPassword(user.getPassword());
-			UserRequestBodyValidation.validateEmail(user.getEmail());
-			UserRequestBodyValidation.validateUserMobileNumber(user.getMobileNumber());
+			// Check to see if the users exists by the email id  then show user already exits
+			  Users checkExisting_User = userService.findByEmail(user.getEmail());
+			  if (checkExisting_User != null) {
+				  logger.info("user already exists");
 
+					return new ResponseEntity<>("user already exists", HttpStatus.CONFLICT);
+			  }
+			logger.info("Received user {}", user);
+			// If the user doesn't exist then create user a response of user created.
 			Users userSaved = this.userService.saveUser(user);
 			logger.info("user saved");
-			return new ResponseEntity<>(userSaved, HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(userSaved, HttpStatus.CREATED);
 
 		} catch (Exception e) {
 			logger.info(e.getMessage());
@@ -56,10 +61,14 @@ public class UserController {
 	public ResponseEntity<?> getAllUser() {
 		List<Users> users;
 		try {
+			// Check to see if the List of users not exists in database  then show user not found
+			
 			users = userService.getAllUser();
 			if (users.isEmpty()) {
+				logger.info("not found any users");
 				return new ResponseEntity<>("Not found any users", HttpStatus.NO_CONTENT);
 			}
+			logger.info("user found");
 			return new ResponseEntity<>(users, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -68,26 +77,12 @@ public class UserController {
 
 	}
 
-	@GetMapping("/getuser")
-	public ResponseEntity<?> getUser() {
-		List<UserGetRequestBody> res;
-		try {
-			res = userService.getUser();
-			if (res.isEmpty()) {
-				return new ResponseEntity<>("Not found any users", HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity<>(res, HttpStatus.OK);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+	
 
 	@GetMapping("/users/{userId}")
-	public ResponseEntity<?> getOneUser(@PathVariable int userId) {
+	public ResponseEntity<?> getOneUser(@Valid @PathVariable int userId) {
 		Users temp = null;
 		try {
-			UserRequestBodyValidation.validateUserId(userId);
 			temp = userService.getOneUser(userId);
 			logger.info("user details found");
 			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
@@ -95,22 +90,15 @@ public class UserController {
 		} catch (Exception e) {
 
 			logger.error("Exception occured, {}", e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
 
 	@PutMapping("/updateuser/{userId}")
-	public ResponseEntity<?> updateUser(@PathVariable int userId, @RequestBody UserUpdateRequestBody user) {
+	public ResponseEntity<?> updateUser(@PathVariable int userId,@Valid @RequestBody UserUpdateRequestBody user) {
 		Users temp = null;
 		try {
-			UserRequestBodyValidation.validateUserId(userId);
-			UserRequestBodyValidation.validateUserName(user.getUserName());
-			UserRequestBodyValidation.validateUserPassword(user.getPassword());
-			UserRequestBodyValidation.validateEmail(user.getEmail());
-			UserRequestBodyValidation.validateUserMobileNumber(user.getMobileNumber());
-			UserRequestBodyValidation.validateStatus(user.getStatus());
-
 			temp = this.userService.updateUser(userId, user);
 			logger.info("user updated successfully");
 			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
@@ -125,7 +113,13 @@ public class UserController {
 	@DeleteMapping("/deleteuser/{userId}")
 	public ResponseEntity<String> deleteUser(@PathVariable int userId) {
 		try {
-			UserRequestBodyValidation.validateUserId(userId);
+			
+			//// Check to see if the users not exists by user id  then show user not found 
+			Users user = userService.getOneUser(userId);
+			if(user==null) {
+				logger.info("user not found for this user id");
+				return new ResponseEntity<>("user not found for this user id",HttpStatus.BAD_REQUEST);
+			}
 			userService.deleteUser(userId);
 			logger.info("user successfully deleted");
 			return new ResponseEntity<String>("user has been deleted successfully", HttpStatus.OK);
@@ -136,5 +130,11 @@ public class UserController {
 		}
 
 	}
+	
+	
+//	@PostMapping("/loginuser")
+//	public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginRequestBody user ){
+//		
+//	}
 
 }

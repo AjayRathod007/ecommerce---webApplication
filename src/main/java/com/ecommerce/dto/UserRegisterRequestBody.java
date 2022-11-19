@@ -1,104 +1,105 @@
 package com.ecommerce.dto;
 
-import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import com.ecommerce.Entities.Address;
 
 public class UserRegisterRequestBody {
-	private String userName;
-	private String password;
-	private String firstName;
-	private String lastName;
+	@Email(message = "invalid email address")
 	private String email;
+	@NotEmpty
+	@Size(min = 8, message = "password should have at least 8 characters")
+	private String password;
+	@NotEmpty
+	@Size(min = 2, message = "First name should have at least 2 characters")
+	private String firstName;
+	@Size(min = 2, message = "First name should have at least 2 characters")
+	private String lastName;
+	@NotNull
+	@Pattern(regexp = "^\\d{10}$", message = "invalid mobile number entered ")
 	private String mobileNumber;
-	private String status;
-	private String city;
-	private String street;
-	private String pincode;
-	private Date createdAt;
+
+	
+	private List<Address> adresses;
+
 	public UserRegisterRequestBody() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public UserRegisterRequestBody(String userName, String password, String firstName, String lastName, String email,
-			String mobileNumber, String status, String city, String street, String pincode, Date createdAt) {
+
+	public UserRegisterRequestBody(@Email String email, String password, String firstName, String lastName,
+			String mobileNumber, List<Address> adresses) {
 		super();
-		this.userName = userName;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.email = email;
-		this.mobileNumber = mobileNumber;
-		this.status = status;
-		this.city = city;
-		this.street = street;
-		this.pincode = pincode;
-		this.createdAt = createdAt;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
 		this.password = password;
-	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
 		this.lastName = lastName;
+		this.mobileNumber = mobileNumber;
+		this.adresses = adresses;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
+
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
-	public String getStatus() {
-		return status;
+
+
+	public List<Address> getAdresses() {
+		return adresses;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+
+	public void setAdresses(List<Address> adresses) {
+		this.adresses = adresses;
 	}
-	public String getCity() {
-		return city;
+
+	@Override
+	public String toString() {
+		return "UserRegisterRequestBody [email=" + email + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", mobileNumber=" + mobileNumber + ", adresses=" + adresses + "]";
 	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getStreet() {
-		return street;
-	}
-	public void setStreet(String street) {
-		this.street = street;
-	}
-	public String getPincode() {
-		return pincode;
-	}
-	public void setPincode(String pincode) {
-		this.pincode = pincode;
-	}
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+	
+	
 	
 	
 

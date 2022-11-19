@@ -61,4 +61,11 @@ public class ProductService {
 		return pro;
 	}
 
+	public Product getProductById(Integer productId) {
+		// TODO Auto-generated method stub
+		
+		
+		return productRepo.findById(productId).get();
+	}
+
 }

@@ -3,8 +3,8 @@ package com.ecommerce.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ecommerce.Entities.Product;
+import com.ecommerce.Entities.Address;
 @Repository
-public interface ProductRepo extends JpaRepository<Product,Integer> {
+public interface AddressRepo extends JpaRepository<Address,Integer> {
 
 }

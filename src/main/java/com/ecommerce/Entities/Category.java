@@ -18,20 +18,18 @@ public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String categoryName;
 
 	private String description;
 
 	private String imageUrl;
-	
+
 	private Date createdAt;
-	
+
 	private Date updatedAt;
-	
-	
-	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	Set<Product> products;
 
 	public Category() {
@@ -111,7 +109,5 @@ public class Category {
 		return "Category [id=" + id + ", categoryName=" + categoryName + ", description=" + description + ", imageUrl="
 				+ imageUrl + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
-
-	
 
 }

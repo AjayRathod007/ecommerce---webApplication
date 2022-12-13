@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -28,9 +27,9 @@ public class Address {
 
 	private Date updatedAt;
 
-	@JsonIgnore
+	@JsonIgnore 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private Users user;
 
 	public Address() {
@@ -118,8 +117,7 @@ public class Address {
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", city=" + city + ", houseNumber=" + houseNumber + ", street=" + street
-				+ ", pincode=" + pincode + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", user=" + user
-				+ "]";
+				+ ", pincode=" + pincode + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 
 }

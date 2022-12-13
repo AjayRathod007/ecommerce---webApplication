@@ -23,7 +23,6 @@ public class Cart {
 
 	private Date createdDate;
 
-
 	@ManyToOne
 	@JoinColumn(name = "product_id", referencedColumnName = "id")
 	private Product product;
@@ -37,15 +36,14 @@ public class Cart {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
 
 	public Cart(Product product, Integer quantity, Users user) {
 		super();
-	    this.user = user;
-        this.product = product;
-        this.quantity = quantity;
-        this.createdDate = new Date();
-		
+		this.user = user;
+		this.product = product;
+		this.quantity = quantity;
+		this.createdDate = new Date();
+
 	}
 
 	public Integer getId() {
@@ -88,8 +86,4 @@ public class Cart {
 		this.createdDate = createdDate;
 	}
 
-	
-	
-
-	
 }

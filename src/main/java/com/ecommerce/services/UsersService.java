@@ -3,9 +3,7 @@ package com.ecommerce.services;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import javax.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +28,13 @@ public class UsersService {
 
 	@Autowired
 	UserRepo userRepo;
-	
+
 	@Autowired
 	AddressRepo addressRepo;
 
 	public Users saveUser(UserRegisterRequestBody user) {
 
 		Users u = new Users();
-		Address ad = new Address();
-
 		logger.info("After Calling Save Data method" + user);
 		u.setPassword(passwordEncoder.encode(user.getPassword()));
 		u.setFirstName(user.getFirstName());
@@ -48,24 +44,24 @@ public class UsersService {
 		u.setCreatedAt(new Date());
 		u.setUpdatedAt(new Date());
 		//u.setAdresses(user.getAdresses());
-//		List<Address> address = user.getAdresses();
-//		for(Address x : address) {
-//			ad.setCity(x.getCity());
-//			ad.setHouseNumber(x.getHouseNumber());
-//			ad.setStreet(x.getStreet());
-//			ad.setPincode(x.getPincode());
-//		}
-//		
-//		u.setAdresses(address);
-        		logger.info("before saving in data base" + u);
+		Users us = userRepo.save(u);
 
-		u = userRepo.save(u);
-
-		logger.info("after saving in data base" + u);
-//		ad.setUser(u);
-//		addressRepo.save(ad);
-
-		return u;
+		List<Address> addressRequest = user.getAdresses();
+		for (Address x : addressRequest) {
+			Address ad = new Address();
+			ad.setCity(x.getCity());
+			ad.setHouseNumber(x.getHouseNumber());
+			ad.setStreet(x.getStreet());
+			ad.setPincode(x.getPincode());
+			ad.setCreatedAt(new Date());
+			ad.setUpdatedAt(new Date());
+			ad.setUser(us);
+			System.out.println( "saved user in address "+us);
+			Address a = addressRepo.save(ad);
+			u.getAdresses().add(a);
+			System.out.println( "saved user in address "+us);
+		}
+		return us;
 	}
 
 	public List<Users> getAllUser() {
@@ -73,31 +69,25 @@ public class UsersService {
 		return userRepo.findAll();
 	}
 
-	
-
 	public Users getOneUser(int userId) {
-		return userRepo.findById(userId).orElseThrow(
-	            () -> new NoSuchElementException(
-	                    "NO CUSTOMER PRESENT WITH ID = " + userId));
-	    }
-		
-	
+		return userRepo.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("NO CUSTOMER PRESENT WITH ID = " + userId));
+	}
+
 	public Users updateUser(int userId, UserUpdateRequestBody user) {
 		Users temp = userRepo.findById(userId).get();
 		temp.setPassword(passwordEncoder.encode(user.getPassword()));
 		temp.setFirstName(user.getFirstName());
 		temp.setLastName(user.getLastName());
 		temp.setUpdatedAt(new Date());
-		
+
 		return userRepo.save(temp);
-		
+
 	}
 
 	public void deleteUser(int userId) {
 		Users temp = userRepo.findById(userId).get();
-		
 		userRepo.delete(temp);
-		
 	}
 
 	public Users findByEmail(String email) {
@@ -106,9 +96,7 @@ public class UsersService {
 	}
 
 	public Users getUserById(int userId) {
-		// TODO Auto-generated method stub
 		return userRepo.findById(userId).get();
 	}
 
-	
 }

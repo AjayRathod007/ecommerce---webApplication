@@ -25,16 +25,15 @@ public class Product {
 	private String description;
 	private Date createdAt;
 	private Date updatedAt;
-	
-	
+
 	@JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    Category category;
-	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "category_id", nullable = false)
+	Category category;
+
 	@JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private List<Cart> carts;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+	private List<Cart> carts;
 
 	public Product() {
 		super();
@@ -131,8 +130,4 @@ public class Product {
 				+ description + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 
-	
-
-
-	
 }

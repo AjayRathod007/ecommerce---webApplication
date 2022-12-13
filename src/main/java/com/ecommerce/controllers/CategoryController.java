@@ -31,7 +31,8 @@ public class CategoryController {
 	public ResponseEntity<?> createCategory(@RequestBody CategoryRequestBody category) {
 
 		try {
-			// Check to see if the category exists by the category name then show category already exits
+			// Check to see if the category exists by the category name then show category
+			// already exits
 			List<Category> temp = categoryService.getCategoryByCategoryName(category.getCategoryName());
 			if (!temp.isEmpty()) {
 				logger.info("category already exists");
@@ -39,7 +40,7 @@ public class CategoryController {
 				return new ResponseEntity<>("category already exists", HttpStatus.CONFLICT);
 
 			}
-            // If the category doesn't exist then create category a response of created.
+			// If the category doesn't exist then create category a response of created.
 			Category cat = categoryService.createCategory(category);
 			logger.info("category saved successfully");
 			return new ResponseEntity<>(cat, HttpStatus.CREATED);
@@ -75,7 +76,8 @@ public class CategoryController {
 	}
 
 	@PutMapping("/updatecategory/{categoryID}")
-	public ResponseEntity<?> updateCategory(@PathVariable("categoryID") Integer categoryID, @RequestBody CategoryUpdatedRequestBody category) {
+	public ResponseEntity<?> updateCategory(@PathVariable("categoryID") Integer categoryID,
+			@RequestBody CategoryUpdatedRequestBody category) {
 		// Check to see if the category exists.
 		try {
 			Category temp = categoryService.findByCategoryId(categoryID);

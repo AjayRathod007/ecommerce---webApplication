@@ -1,11 +1,13 @@
 package com.ecommerce.dto;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class AddressRequestBody {
+public class AddressUpdateRequestBody {
 
 	@NotEmpty
 	@Size(min = 2, message = "City name should have at least 2 characters")
@@ -19,17 +21,20 @@ public class AddressRequestBody {
 	@Pattern(regexp = "^[1-9][0-9]{5}$")
 	private String pincode;
 
-	public AddressRequestBody() {
+	private Date updatedAt;
+
+	public AddressUpdateRequestBody() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public AddressRequestBody(String city, int houseNumber, String street, String pincode) {
+	public AddressUpdateRequestBody(String city, int houseNumber, String street, String pincode, Date updatedAt) {
 		super();
 		this.city = city;
 		this.houseNumber = houseNumber;
 		this.street = street;
 		this.pincode = pincode;
+		this.updatedAt = updatedAt;
 	}
 
 	public String getCity() {
@@ -62,6 +67,14 @@ public class AddressRequestBody {
 
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 }

@@ -25,7 +25,6 @@ public class UserRegisterRequestBody {
 	@Pattern(regexp = "^\\d{10}$", message = "invalid mobile number entered ")
 	private String mobileNumber;
 
-	
 	private List<Address> adresses;
 
 	public UserRegisterRequestBody() {
@@ -84,7 +83,6 @@ public class UserRegisterRequestBody {
 		this.mobileNumber = mobileNumber;
 	}
 
-
 	public List<Address> getAdresses() {
 		return adresses;
 	}
@@ -98,9 +96,5 @@ public class UserRegisterRequestBody {
 		return "UserRegisterRequestBody [email=" + email + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", mobileNumber=" + mobileNumber + ", adresses=" + adresses + "]";
 	}
-	
-	
-	
-	
 
 }

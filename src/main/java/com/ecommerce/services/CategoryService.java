@@ -30,9 +30,8 @@ public class CategoryService {
 		temp.setCreatedAt(new Date());
 		temp.setUpdatedAt(new Date());
 		temp.setProducts(category.getProducts());
-		
-		
-		return categoryRepo.save(temp); 
+
+		return categoryRepo.save(temp);
 
 	}
 

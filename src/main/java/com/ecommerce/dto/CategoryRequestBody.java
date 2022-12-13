@@ -11,9 +11,9 @@ public class CategoryRequestBody {
 	private String description;
 
 	private String imageUrl;
-	
+
 	private Date createdAt;
-	
+
 	Set<Product> products;
 
 	public Set<Product> getProducts() {
@@ -74,7 +74,5 @@ public class CategoryRequestBody {
 		return "CategoryRequestBody [categoryName=" + categoryName + ", description=" + description + ", imageUrl="
 				+ imageUrl + ", createdAt=" + createdAt + "]";
 	}
-	
-	
 
 }

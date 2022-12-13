@@ -25,62 +25,56 @@ public class OrderController {
 	Logger logger = LoggerFactory.getLogger(OrderController.class);
 	@Autowired
 	OrderService orderService;
-	
+
 	@Autowired
 	CartService cartService;
-	
+
 	@Autowired
 	UsersService userService;
-	
+
 	@PostMapping("/order/{userId}")
-	public ResponseEntity<?> placeOrder(@Valid @PathVariable int userId){
+	public ResponseEntity<?> placeOrder(@Valid @PathVariable int userId) {
 		try {
 			Users user = userService.getUserById(userId);
 			Order or = orderService.placeOrder(user);
-			return new ResponseEntity<>(or,HttpStatus.CREATED);
-			
-		}catch(Exception e){
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(or, HttpStatus.CREATED);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		
+
 	}
-	
-	
 
-	 
-	 @GetMapping("/orders")
-		public ResponseEntity<?> getAllOrder() {
-			List<Order> temp = null;
-			try {
-				temp = this.orderService.getAllOrder();
-				if (temp.size() == 0)
-					throw new Exception("not found any Order");
-				else
-					logger.info("Data found");
+	@GetMapping("/orders")
+	public ResponseEntity<?> getAllOrder() {
+		List<Order> temp = null;
+		try {
+			temp = this.orderService.getAllOrder();
+			if (temp.size() == 0)
+				throw new Exception("not found any Order");
+			else
+				logger.info("Data found");
 
-				return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
 
-			} catch (Exception e) {
-				logger.info(e.getMessage());
+		} catch (Exception e) {
+			logger.info(e.getMessage());
 
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
-			}
-	 }
+		}
+	}
 
-	    // get order items for an order
-	    @GetMapping("order/{orderId}")
-	    public ResponseEntity<?> getOrderById(@PathVariable Integer orderId){
-	        try {
-	            Order order = orderService.getOrder(orderId);
-	            return new ResponseEntity<>(order,HttpStatus.OK);
-	        }
-	        catch (Exception e) {
-	            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
-	        }
+	// get order items for an order
+	@GetMapping("order/{orderId}")
+	public ResponseEntity<?> getOrderById(@PathVariable Integer orderId) {
+		try {
+			Order order = orderService.getOrder(orderId);
+			return new ResponseEntity<>(order, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 
-	    }
-	
-	
+	}
 
 }

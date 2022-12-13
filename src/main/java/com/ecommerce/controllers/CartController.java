@@ -59,7 +59,7 @@ public class CartController {
 	}
 
 	@PutMapping("/update/{cartId}/{userId}")
-	public ResponseEntity<?> updateCartItem(@Valid @PathVariable int cartId,@PathVariable int userId,
+	public ResponseEntity<?> updateCartItem(@Valid @PathVariable int cartId, @PathVariable int userId,
 			@RequestBody @Valid AddToCartDto cartDto) {
 		try {
 			Users user = userService.getUserById(userId);
@@ -70,16 +70,15 @@ public class CartController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	 @DeleteMapping("/delete/{cartItemId}/{userId}")
-	    public ResponseEntity<?> deleteCartItem(@PathVariable("cartItemId") int itemID,@PathVariable int userId) {
-	      try {  
-	        cartService.deleteCartItem(itemID, userId);
-	        return new ResponseEntity<>("item deleted in cart successfully" , HttpStatus.OK);
-	      }catch(Exception e) {
-	    	  return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-	      }
-	    }
 
+	@DeleteMapping("/delete/{cartItemId}/{userId}")
+	public ResponseEntity<?> deleteCartItem(@PathVariable("cartItemId") int itemID, @PathVariable int userId) {
+		try {
+			cartService.deleteCartItem(itemID, userId);
+			return new ResponseEntity<>("item deleted in cart successfully", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 
 }

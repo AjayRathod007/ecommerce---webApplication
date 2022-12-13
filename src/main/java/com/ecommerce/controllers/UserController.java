@@ -24,7 +24,6 @@ import com.ecommerce.dto.UserRegisterRequestBody;
 import com.ecommerce.dto.UserUpdateRequestBody;
 import com.ecommerce.services.UsersService;
 
-
 @RestController
 public class UserController {
 
@@ -34,15 +33,15 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> userRegister(@Valid @RequestBody UserRegisterRequestBody user) {
-            
-		try {
-			// Check to see if the users exists by the email id  then show user already exits
-			  Users checkExisting_User = userService.findByEmail(user.getEmail());
-			  if (checkExisting_User != null) {
-				  logger.info("user already exists");
 
-					return new ResponseEntity<>("user already exists", HttpStatus.CONFLICT);
-			  }
+		try {
+			// Check to see if the users exists by the email id then show user already exits
+			Users checkExisting_User = userService.findByEmail(user.getEmail());
+			if (checkExisting_User != null) {
+				logger.info("user already exists");
+
+				return new ResponseEntity<>("user already exists", HttpStatus.CONFLICT);
+			}
 			logger.info("Received user {}", user);
 			// If the user doesn't exist then create user a response of user created.
 			Users userSaved = this.userService.saveUser(user);
@@ -61,8 +60,9 @@ public class UserController {
 	public ResponseEntity<?> getAllUser() {
 		List<Users> users;
 		try {
-			// Check to see if the List of users not exists in database  then show user not found
-			
+			// Check to see if the List of users not exists in database then show user not
+			// found
+
 			users = userService.getAllUser();
 			if (users.isEmpty()) {
 				logger.info("not found any users");
@@ -76,8 +76,6 @@ public class UserController {
 		}
 
 	}
-
-	
 
 	@GetMapping("/users/{userId}")
 	public ResponseEntity<?> getOneUser(@Valid @PathVariable int userId) {
@@ -96,7 +94,7 @@ public class UserController {
 	}
 
 	@PutMapping("/updateuser/{userId}")
-	public ResponseEntity<?> updateUser(@PathVariable int userId,@Valid @RequestBody UserUpdateRequestBody user) {
+	public ResponseEntity<?> updateUser(@PathVariable int userId, @Valid @RequestBody UserUpdateRequestBody user) {
 		Users temp = null;
 		try {
 			temp = this.userService.updateUser(userId, user);
@@ -113,12 +111,12 @@ public class UserController {
 	@DeleteMapping("/deleteuser/{userId}")
 	public ResponseEntity<String> deleteUser(@PathVariable int userId) {
 		try {
-			
-			//// Check to see if the users not exists by user id  then show user not found 
+
+			//// Check to see if the users not exists by user id then show user not found
 			Users user = userService.getOneUser(userId);
-			if(user==null) {
+			if (user == null) {
 				logger.info("user not found for this user id");
-				return new ResponseEntity<>("user not found for this user id",HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>("user not found for this user id", HttpStatus.BAD_REQUEST);
 			}
 			userService.deleteUser(userId);
 			logger.info("user successfully deleted");
@@ -130,8 +128,7 @@ public class UserController {
 		}
 
 	}
-	
-	
+
 //	@PostMapping("/loginuser")
 //	public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginRequestBody user ){
 //		

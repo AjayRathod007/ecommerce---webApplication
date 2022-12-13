@@ -1,5 +1,6 @@
 package com.ecommerce.Entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,32 +29,35 @@ public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
 	@NotEmpty
 	@Email(message = "invlalid email address")
 	private String email;
-	
+
 	@NotEmpty
 	@Size(min = 8, message = "password should have at least 8 characters")
 	private String password;
-	
+
 	@NotEmpty
 	@Size(min = 2, message = "First name should have at least 2 characters")
 	private String firstName;
-	
+
 	@Size(min = 2, message = "First name should have at least 2 characters")
 	private String lastName;
-	
+
 	@Pattern(regexp = "^\\d{10}$", message = "invalid mobile number entered ")
 	private String mobileNumber;
-	
+
 	private Date createdAt;
-	
+
 	private Date updatedAt;
-  
-	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL)
-	private List<Address> adresses;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Address> adresses = new ArrayList<>();
+
+//	@JoinColumn(name = "user_id", referencedColumnName = "id",insertable = true, updatable = true, nullable=false)
+//	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL)
+//	private List<Address> adresses = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -61,7 +65,6 @@ public class Users {
 
 	public Users() {
 		super();
-
 	}
 
 	public Users(int id, String email, String password, String firstName, String lastName, String mobileNumber,

@@ -11,9 +11,9 @@ public class CategoryUpdatedRequestBody {
 	private String description;
 
 	private String imageUrl;
-	
+
 	private Date updatedAt;
-	
+
 	Set<Product> products;
 
 	public CategoryUpdatedRequestBody() {
@@ -68,9 +68,5 @@ public class CategoryUpdatedRequestBody {
 	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
-
-	
-	
-	
 
 }
